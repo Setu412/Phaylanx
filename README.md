@@ -1,4 +1,4 @@
 # Phaylanx
 **Code alongside with friends and AI**
 
-![System Design](SystemDesignPhaylanx.png)
+![System Design](logo_diagrams/SystemDesignPhaylanx.png)
