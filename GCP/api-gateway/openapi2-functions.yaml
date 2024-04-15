@@ -1,0 +1,140 @@
+swagger: "2.0"
+info:
+  title: phaylanx-api-gateway-setu # Change this to your api-gateway name
+  description: API Gateway to Phaylanx backend cloud functions
+  version: "1.0.0"
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /gpt-service:
+    post:
+      summary: Returns the response from ChatGPT
+      operationId: chatgptService
+      x-google-backend:
+        address: https://us-west1-setu-phaylanx.cloudfunctions.net/gpt-service # Change this to chatgpt service api
+      responses:
+        200:
+          description: A successful response from ChatGPT
+          schema:
+            type: object
+        default:
+          description: Unexpected error
+          schema:
+            type: object
+    options:
+      summary: CORS support for preflight requests
+      operationId: chatgptServiceCorsPreflight
+      x-google-backend:
+        address: https://us-west1-setu-phaylanx.cloudfunctions.net/gpt-service # Change this to chatgpt service api
+      responses:
+        200:
+          description: CORS response
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+              default: "*"
+            Access-Control-Allow-Methods:
+              type: string
+              default: "POST, OPTIONS"
+            Access-Control-Allow-Headers:
+              type: string
+              default: "Content-Type, Authorization"
+            Access-Control-Max-Age:
+              type: string
+              default: "3600"
+          schema:
+            type: object
+  /run-code:
+    post:
+      summary: Returns the result from code execution
+      operationId: run-code
+      x-google-backend:
+        address: https://us-central1-setu-phaylanx.cloudfunctions.net/run-python # Change this to run-code service api
+      responses:
+        200:
+          description: A successful response
+          schema:
+            type: string
+        403:
+          description: Access denied or Expired Token or Invalid API Key or Invalid Signature or Missing Authentication Token or WAF Filtered
+          schema:
+            type: string
+        500:
+          description: API configuration error or Authorizer configuration error or Authorizer failure
+          schema:
+            type: string
+        400:
+          description: Bad Request Body or Bad Request Parameters
+          schema:
+            type: string
+        401:
+          description: Unauthorized
+          schema:
+            type: string
+    options:
+      summary: CORS support
+      description: Returns CORS headers for preflight requests
+      operationId: run-code-cors # Added operationId for CORS
+      x-google-backend:
+        address: https://us-central1-setu-phaylanx.cloudfunctions.net/run-python # Change this to run-code service api
+      responses:
+        200:
+          description: CORS response
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+              default: "*"
+            Access-Control-Allow-Methods:
+              type: string
+              default: "POST, OPTIONS"
+            Access-Control-Allow-Headers:
+              type: string
+              default: "Content-Type, Authorization"
+            Access-Control-Max-Age:
+              type: string
+              default: "3600"
+          schema:
+            type: object
+  /support-ticket:
+    post:
+      summary: Send the support ticket prompt to developers
+      operationId: supportTicket
+      x-google-backend:
+        address: https://us-central1-setu-phaylanx.cloudfunctions.net/support_ticket # Change this to chatgpt service api
+      responses:
+        200:
+          description: A successful response from support ticket
+          schema:
+            type: object
+        default:
+          description: Unexpected error
+          schema:
+            type: object
+    options:
+      summary: CORS support for preflight requests
+      operationId: supportTicketCorsPreflight
+      x-google-backend:
+        address: https://us-central1-setu-phaylanx.cloudfunctions.net/support_ticket # Change this to chatgpt service api
+      responses:
+        200:
+          description: CORS response
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+              default: "*"
+            Access-Control-Allow-Methods:
+              type: string
+              default: "POST, OPTIONS"
+            Access-Control-Allow-Headers:
+              type: string
+              default: "Content-Type, Authorization"
+            Access-Control-Max-Age:
+              type: string
+              default: "3600"
+          schema:
+            type: object
+x-google-endpoints:
+  - name: phaylanx-api-gateway-setu-3ngmdbzbr4d0p.apigateway.setu-phaylanx.cloud.goog # Change this to api-gateway endpoint
+    allowCors: true
